@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - 页面未找到</title>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <style>
+      body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    /* 粒子背景样式 */
+    .particle-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    
+    /* 404页面样式 */
+    .not-found-container {
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #0f172a, #1e293b);
+      padding-top: 80px;
+      position: relative;
+    }
+    
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .not-found-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 0;
+    }
+    
+    .error-number {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    
+    .error-number-bg {
+      font-size: 9rem;
+      font-weight: bold;
+      color: #818cf8;
+      opacity: 0.2;
+    }
+    
+    .error-number-fg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9rem;
+      font-weight: bold;
+      color: #818cf8;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 24px;
+    }
+    
+    .highlight {
+      color: #818cf8;
+    }
+    
+    .description {
+      font-size: 1.25rem;
+      color: #d1d5db;
+      max-width: 42rem;
+      margin-bottom: 40px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 64px;
+    }
+    
+    .btn-primary {
+      padding: 12px 32px;
+      background: linear-gradient(to right, #4f46e5, #7c3aed);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-primary:hover {
+      opacity: 0.9;
+      box-shadow: 0 10px 15px -3px rgba(129, 140, 248, 0.3);
+    }
+    
+    .btn-secondary {
+      padding: 12px 32px;
+      border: 1px solid #818cf8;
+      color: #818cf8;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(129, 140, 248, 0.1);
+    }
+    
+    .tech-elements {
+      margin-top: 64px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      opacity: 0.5;
+    }
+    
+    .tech-element {
+      text-align: center;
+    }
+    
+    .tech-line {
+      height: 4px;
+      width: 100%;
+      background-color: #818cf8;
+      border-radius: 9999px;
+      margin-bottom: 8px;
+    }
+    
+    .tech-code {
+      font-size: 0.75rem;
+      color: #a5b4fc;
+      font-family: monospace;
+      letter-spacing: 0.1em;
+    }
+    
+    /* 动画定义 */
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.3;
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <!-- 粒子背景 -->
+    <div class="particle-background">
+      <canvas id="particle-canvas"></canvas>
+    </div>
+    <!-- 404页面内容 -->
+    <div class="not-found-container">
+      <div class="main-content">
+        <section class="not-found-section">
+          <!-- 404数字动画 -->
+          <div class="error-number">
+            <span class="error-number-bg">404</span>
+            <div class="error-number-fg">404</div>
+          </div>
+          <h1>
+            页面<span class="highlight">迷失</span>在数字宇宙中
+          </h1>
+          <p class="description">
+            我们无法找到您请求的页面，但它可能存在于另一个维度
+          </p>
+          <div class="action-buttons">
+            <a href="/" class="btn-primary">
+              返回首页
+            </a>
+            <a href="/error-report" class="btn-secondary">
+              报告问题
+            </a>
+          </div>
+          <!-- 科技感装饰元素 -->
+          <div class="tech-elements">
+            <div class="tech-element">
+              <div class="tech-line"></div>
+              <div class="tech-code" id="tech-code-1"></div>
+            </div>
+            <div class="tech-element">
+              <div class="tech-line"></div>
+              <div class="tech-code" id="tech-code-2"></div>
+            </div>
+            <div class="tech-element">
+              <div class="tech-line"></div>
+              <div class="tech-code" id="tech-code-3"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <script>
+      // 修复后的粒子系统代码
+      const canvas = document.getElementById('particle-canvas');
+      let scene, camera, renderer, particles;
+
+      function initParticles() {
+          // 初始化场景
+          scene = new THREE.Scene();
+          camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+          renderer = new THREE.WebGLRenderer({ 
+              canvas: canvas,
+              alpha: true,
+              antialias: true
+          });
+
+          // 设置渲染器
+          renderer.setPixelRatio(window.devicePixelRatio);
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          camera.position.z = 15;
+
+          // 创建粒子几何体
+          const geometry = new THREE.BufferGeometry();
+          const particleCount = 10000;
+          const positions = new Float32Array(particleCount * 3);
+
+          for(let i = 0; i < particleCount * 3; i += 3) {
+              positions[i] = (Math.random() - 0.5) * 40;  // x
+              positions[i + 1] = (Math.random() - 0.5) * 40; // y
+              positions[i + 2] = (Math.random() - 0.5) * 40; // z
+          }
+
+          geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+          // 粒子材质
+          const material = new THREE.PointsMaterial({
+              size: 0.1,
+              color: 0x818cf8,
+              transparent: true,
+              opacity: 0.7,
+              sizeAttenuation: true
+          });
+
+          // 创建粒子系统
+          particles = new THREE.Points(geometry, material);
+          scene.add(particles);
+      }
+
+      function animate() {
+          requestAnimationFrame(animate);
+
+          if(particles) {
+              particles.rotation.x += 0.001;
+              particles.rotation.y += 0.002;
+              renderer.render(scene, camera);
+          }
+      }
+
+      function onWindowResize() {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      // 初始化粒子系统
+      initParticles();
+      animate();
+      window.addEventListener('resize', onWindowResize);
+
+      // 随机代码生成器（保持不变）
+      function updateTechCodes() {
+          for (let i = 1; i <= 3; i++) {
+              document.getElementById(`tech-code-${i}`).textContent = 
+                  '0x' + Math.random().toString(16).slice(2, 6).toUpperCase();
+          }
+      }
+      updateTechCodes();
+      setInterval(updateTechCodes, 2000);
+    </script>
+  </body>
+</html>
